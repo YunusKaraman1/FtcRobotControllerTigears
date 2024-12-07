@@ -2,10 +2,8 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp
 public class RobotCentric extends LinearOpMode {
@@ -13,14 +11,12 @@ public class RobotCentric extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         // Declare our motors
         // Make sure your ID's match your configuration
-        DcMotor frontLeftMotor = hardwareMap.dcMotor.get("FrontLeft");
-        DcMotor backLeftMotor = hardwareMap.dcMotor.get("BackLeft");
-        DcMotor frontRightMotor = hardwareMap.dcMotor.get("FrontRight");
-        DcMotor backRightMotor = hardwareMap.dcMotor.get("BackRight");
+        DcMotor frontLeftMotor = hardwareMap.dcMotor.get("frontLeftMotor");
+        DcMotor backLeftMotor = hardwareMap.dcMotor.get("backLeftMotor");
+        DcMotor frontRightMotor = hardwareMap.dcMotor.get("frontRightMotor");
+        DcMotor backRightMotor = hardwareMap.dcMotor.get("backRightMotor");
 
 
-        CRServo claw = hardwareMap.crservo.get("claw");
-        Servo rotate = hardwareMap.get(Servo.class, "rotate");
         DcMotor rslide = hardwareMap.get(DcMotor.class, "RightSlide");
         rslide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rslide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -59,28 +55,19 @@ public class RobotCentric extends LinearOpMode {
             frontRightMotor.setPower(frontRightPower);
             backRightMotor.setPower(backRightPower);
 
-            if (gamepad2.a) {
-                claw.setPower(-1);
-            }
-            if (gamepad2.b) {
-                claw.setPower(1);
-            }
-            if (gamepad2.x) {
-                rotate.setPosition(1);
-            }
-            if (gamepad2.y) {
-                rotate.setPosition(0.2);
-            }
-            if (gamepad2.right_bumper) {
-                rotate.setPosition(-1);
-            }
-            if (gamepad2.dpad_down) {
+            while (gamepad2.dpad_down) {
                 rslide.setPower(1);
-                lslide.setPower(-1);
-            } else if (gamepad2.dpad_up) {
+            }
+            while (gamepad2.dpad_up) {
                 rslide.setPower(-1);
+            }
+            while (gamepad2.dpad_left) {
                 lslide.setPower(1);
-            } else {
+            }
+            while (gamepad2.dpad_right) {
+                lslide.setPower(-1);
+            }
+            while (gamepad1.atRest()) {
                 rslide.setPower(0);
                 lslide.setPower(0);
             }
