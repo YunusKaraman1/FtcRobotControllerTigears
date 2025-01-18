@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp
 public class RobotCentric extends LinearOpMode {
@@ -17,12 +18,13 @@ public class RobotCentric extends LinearOpMode {
         DcMotor backRightMotor = hardwareMap.dcMotor.get("backRightMotor");
 
 
-        DcMotor rslide = hardwareMap.get(DcMotor.class, "RightSlide");
-        rslide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rslide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        DcMotor lslide = hardwareMap.get(DcMotor.class, "LeftSlide");
-        lslide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        lslide.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        DcMotor downSlide = hardwareMap.get(DcMotor.class, "downSlide");
+        DcMotor upSlide = hardwareMap.get(DcMotor.class, "upSlide");
+
+        Servo rotateClawServo = hardwareMap.servo.get("rotateClawServo");
+        Servo openClawServo = hardwareMap.servo.get("openClawServo");
+        Servo rotateBucketServo = hardwareMap.servo.get("rotateBucketServo");
+
 
 
         // Reverse the right side motors. This may be wrong for your setup.
@@ -55,21 +57,39 @@ public class RobotCentric extends LinearOpMode {
             frontRightMotor.setPower(frontRightPower);
             backRightMotor.setPower(backRightPower);
 
-            while (gamepad2.dpad_down) {
-                rslide.setPower(1);
-            }
-            while (gamepad2.dpad_up) {
-                rslide.setPower(-1);
+            if (gamepad1.atRest()) {
+                downSlide.setPower(0);
+                upSlide.setPower(0);
             }
             while (gamepad2.dpad_left) {
-                lslide.setPower(1);
+                downSlide.setPower(1);
             }
             while (gamepad2.dpad_right) {
-                lslide.setPower(-1);
+                downSlide.setPower(-1);
             }
-            while (gamepad1.atRest()) {
-                rslide.setPower(0);
-                lslide.setPower(0);
+            while (gamepad2.dpad_up) {
+                upSlide.setPower(1);
+            }
+            while (gamepad2.dpad_down) {
+                upSlide.setPower(-1);
+            }
+            if (gamepad2.a) {
+                rotateClawServo.setPosition(0);
+            }
+            if (gamepad2.b) {
+                rotateClawServo.setPosition(0.6);
+            }
+            if (gamepad2.x) {
+                openClawServo.setPosition(0.1);
+            }
+            if (gamepad2.y) {
+                openClawServo.setPosition(0.3);
+            }
+            if (gamepad2.left_bumper) {
+                rotateBucketServo.setPosition(0);
+            }
+            if (gamepad2.right_bumper) {
+                rotateBucketServo.setPosition(0.5);
             }
         }
     }
